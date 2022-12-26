@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "remnote-plugin-template-react",
+  "name": "remnote-twitter-bot",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
