@@ -23,16 +23,10 @@ export const SampleWidget = () => {
       <h1>Twitter Bot</h1>
       Hey! We need to do a 1-time connection to your Twitter account to get your tweets.
       <br />
-      {/* <div className="my-2">
-        <ul>
-          <li>Save tweets</li>
-          <li>Generate flashcards from tweets</li>
-        </ul>
-      </div> */}
       <br />
       {twitterBotKey ? (
-        <a href={link} target="_blank">
-          <div className="bg-blue-50 p-2 cursor-pointer text-white rounded mb-2 !no-underline text-center">
+        <a href={link} target="_blank" className="!no-underline">
+          <div className="bg-blue-50 p-2 cursor-pointer text-white rounded mb-2 text-center">
             Click here, then press "Send"
           </div>
         </a>
