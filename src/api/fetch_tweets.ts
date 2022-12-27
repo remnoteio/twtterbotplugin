@@ -42,25 +42,25 @@ export async function fetchTweets(plugin: RNPlugin) {
     await fetch(`${FETCH_URL}?remnotePairKey=${key}&time=${time}`)
   ).json();
 
-  console.log('tweets', tweets);
+  //   console.log('tweets', tweets);
 
-  const tweetsRem = await getOrCreateByName(plugin, ['Saved Tweets']);
-  await tweetsRem?.setIsDocument(true);
+  const savedTweetsRem = await getOrCreateByName(plugin, ['Saved Tweets']);
+  await savedTweetsRem?.setIsDocument(true);
 
-  const tweetRem = await getOrCreateByName(plugin, ['Tweet']);
+  const tweetTagRem = await getOrCreateByName(plugin, ['Tweet']);
 
   for (const tweet of tweets) {
     const tweetRem = await plugin.rem.createWithMarkdown(
       `${tweet.tweetText} [Link](${tweet.tweet.url})`
     );
 
-    await tweetRem?.addTag(tweetRem);
+    await tweetRem?.addTag(tweetTagRem);
 
     if (tweet.info.type == SaveTweetCommand.Learn && tweet.info.generatedCard) {
       const questionRem = await plugin.rem.createWithMarkdown(
         `${tweet.info.generatedCard.question} >> ${tweet.info.generatedCard.answer}`
       );
-      await questionRem?.setParent(tweetsRem ?? null);
+      await questionRem?.setParent(savedTweetsRem ?? null);
       await tweetRem?.setParent(questionRem!);
       await tweetRem?.addPowerup(BuiltInPowerupCodes.ExtraCardDetail);
     } else {
@@ -68,7 +68,11 @@ export async function fetchTweets(plugin: RNPlugin) {
       const saveLocation = tweet.info.saveLocation;
       const saveLocationRem = saveLocation
         ? await getOrCreateByName(plugin, [saveLocation])
-        : tweetsRem;
+        : savedTweetsRem;
+
+      //   console.log('saveLocation', saveLocation, saveLocationRem);
+
+      await saveLocationRem?.setIsDocument(true);
 
       await tweetRem?.setParent(saveLocationRem ?? null);
 
@@ -82,5 +86,5 @@ export async function fetchTweets(plugin: RNPlugin) {
 
   await plugin.storage.setSynced(LAST_FETCH_TIME_STORAGE, new Date().getTime());
 
-  tweetsRem?.openRemAsPage();
+  savedTweetsRem?.openRemAsPage();
 }

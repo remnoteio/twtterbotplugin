@@ -5,6 +5,8 @@ export async function getOrCreateByName(plugin: RNPlugin, name: RichTextInterfac
   if (rem) {
     return rem;
   } else {
-    return plugin.rem.createWithMarkdown('Tweets');
+    const x = await plugin.rem.createRem();
+    await x?.setText(name);
+    return x!;
   }
 }
