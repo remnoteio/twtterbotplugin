@@ -67,7 +67,6 @@ export const RightSidebarWidget = () => {
   return (
     <div className="m-4">
       <h1>Save to RemNote</h1>
-      <br />
       <h2>Twitter</h2>
       {twitterConnected ? (
         <div>

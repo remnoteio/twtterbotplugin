@@ -1,5 +1,6 @@
 import { renderWidget, usePlugin, useSyncedStorageState } from '@remnote/plugin-sdk';
 import { useIntervalWhen } from 'rooks';
+import { REMNOTE_BOT_DM_ID } from '../api/consts';
 import { fetchTweets } from '../api/fetch_tweets';
 import { CONNECTED_TO_TWITTER_STORAGE, REMNOTE_PAIR_KEY_STORAGE } from '../api/storage';
 import { BlueButton } from '../ui/BlueButton';
