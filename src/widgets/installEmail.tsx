@@ -1,8 +1,8 @@
 import { renderWidget, usePlugin, useSyncedStorageState } from '@remnote/plugin-sdk';
+import { useIntervalWhen } from 'rooks';
 import { fetchEmails } from '../api/fetch_emails';
 import { CONNECTED_TO_EMAIL_STORAGE, REMNOTE_PAIR_KEY_STORAGE } from '../api/storage';
 import { BlueButton } from '../ui/BlueButton';
-import { useIntervalWhen } from 'rooks';
 
 export const InstallEmailWidget = () => {
   const [twitterBotKey] = useSyncedStorageState<undefined | string>(

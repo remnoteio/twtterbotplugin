@@ -17,8 +17,15 @@ async function onActivate(plugin: ReactRNPlugin) {
     widgetTabIcon: 'https://i.imgur.com/hY8ss08.png',
   });
 
+  void loadTwitter(plugin);
+  void fetchEmails(plugin);
+
+  // // Show a toast notification to the user.
+  // await plugin.app.toast("I'm a toast!");
+}
+
+async function loadTwitter(plugin: any) {
   await fetchTweets(plugin);
-  await fetchEmails(plugin);
 
   const promptedTwitterConnected = await plugin.storage.getSynced(PROMPTED_TO_CONNECT_TO_TWITTER);
 
@@ -26,9 +33,6 @@ async function onActivate(plugin: ReactRNPlugin) {
     await plugin.widget.openPopup('install');
     await plugin.storage.setSynced(PROMPTED_TO_CONNECT_TO_TWITTER, true);
   }
-
-  // // Show a toast notification to the user.
-  // await plugin.app.toast("I'm a toast!");
 }
 
 async function onDeactivate(_: ReactRNPlugin) {}

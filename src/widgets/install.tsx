@@ -1,15 +1,8 @@
-import {
-  usePlugin,
-  renderWidget,
-  useTracker,
-  useSessionStorageState,
-  useSyncedStorageState,
-} from '@remnote/plugin-sdk';
-import React, { useEffect } from 'react';
-import { fetchTweets } from '../api/fetch_tweets';
-import { REMNOTE_PAIR_KEY_STORAGE, CONNECTED_TO_TWITTER_STORAGE } from '../api/storage';
-import { BlueButton } from '../ui/BlueButton';
+import { renderWidget, usePlugin, useSyncedStorageState } from '@remnote/plugin-sdk';
 import { useIntervalWhen } from 'rooks';
+import { fetchTweets } from '../api/fetch_tweets';
+import { CONNECTED_TO_TWITTER_STORAGE, REMNOTE_PAIR_KEY_STORAGE } from '../api/storage';
+import { BlueButton } from '../ui/BlueButton';
 
 export const InstallWidget = () => {
   const [twitterBotKey] = useSyncedStorageState<undefined | string>(

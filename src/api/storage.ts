@@ -1,4 +1,4 @@
-export const REMNOTE_PAIR_KEY_STORAGE = 'remnotePairKey';
+export const REMNOTE_PAIR_KEY_STORAGE = 'remnotePairKey2';
 
 export const LAST_TWEET_FETCH_TIME_STORAGE = 'lastTweetFetchTime';
 export const CONNECTED_TO_TWITTER_STORAGE = 'connectedToTwitter';

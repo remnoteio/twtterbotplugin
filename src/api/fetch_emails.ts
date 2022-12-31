@@ -8,7 +8,8 @@ import {
   LAST_TWEET_FETCH_TIME_STORAGE,
 } from './storage';
 
-const EMAIL_FETCH_URL = 'https://remnoteemailbot2.herokuapp.com/email/fetch';
+const EMAIL_FETCH_URL = 'https://b794-173-75-243-94.ngrok.io/emails/fetch';
+// const EMAIL_FETCH_URL = 'https://remnoteemailbot2.herokuapp.com/emails/fetch';
 
 interface EmailResponse {
   time: number;

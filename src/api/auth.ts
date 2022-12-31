@@ -7,7 +7,9 @@ export async function getOrCreateRemNotePairKey(plugin: RNPlugin) {
   if (key) {
     return key;
   } else {
-    const newKey = ('' + Math.random()).substring(2);
+    const newKey = (
+      ('' + Math.random()).substring(2) + ('' + Math.random()).substring(2)
+    ).substring(0, 16);
     await plugin.storage.setSynced(REMNOTE_PAIR_KEY_STORAGE, newKey);
     return newKey;
   }
