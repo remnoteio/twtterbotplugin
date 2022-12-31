@@ -1,17 +1,31 @@
-# RemNote Twitter Bot
+# Save to RemNote (Twitter and Email)
+
+Save tweets and emails directly to RemNote!
+
+## Email
+
+Send emails directly to RemNote by emailing save@remnote.com
+
+### Getting Started
+
+1. Install the plugin
+2. Open the "Save to RemNote" section on the right-sidebar with the ![](https://i.imgur.com/tarT4TU.png) icon
+3. Press "Connect Email"
+
+## Tweets
 
 Save Tweets directly to RemNote, and use AI to auto-generate flashcards from tweets!
 
-## Getting Started
+### Getting Started
 
 1. Install the plugin and press the "CONNECT" button in the popup
 2. Reply to any tweet with @rem_note, or share the tweet in a Twitter DM to @rem_note
 
-## Commands
+### Twitter Commands
 
 Message the Twitter bot with either the "save" or "learn" command.
 
-### Save Commands:
+#### Twitter "Save" Commands:
 
 Message @rem_note "save" or "save to" to save to your knowledge base. Optionally specify the save location in RemNote
 
@@ -20,7 +34,7 @@ Example:
 - @rem_note save
 - @rem_note save to "Reading List"
 
-### Learn Commands:
+### Twitter "Learn" Commands:
 
 Message @rem_note "learn" to auto-generate flashcards. Optionally specify a question that you want to learn.
 

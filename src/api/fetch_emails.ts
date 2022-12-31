@@ -53,7 +53,7 @@ export async function fetchEmails(plugin: RNPlugin) {
         await bodyRem?.setParent(tweetRem);
       }
 
-      await plugin.storage.setSynced(LAST_TWEET_FETCH_TIME_STORAGE, new Date().getTime());
+      await plugin.storage.setSynced(LAST_EMAIL_FETCH_ERROR, new Date().getTime());
       await plugin.storage.setSynced(CONNECTED_TO_EMAIL_STORAGE, true);
 
       savedEmailsRem?.openRemAsPage();
