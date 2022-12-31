@@ -1,9 +1,9 @@
 {
   "author": "RemNote",
-  "name": "RemNote Twitter Bot",
+  "name": "Save to RemNote (Twitter and Email)",
   "description": "",
   "enableOnMobile": false,
-  "id": "remnote-twitter-bot",
+  "id": "save_to_remnote",
   "manifestVersion": 1,
   "repoUrl": "https://github.com/remnoteio/twtterbotplugin",
   "version": {

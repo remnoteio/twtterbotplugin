@@ -1,14 +1,14 @@
 import { RNPlugin } from '@remnote/plugin-sdk';
-import { TWITTER_BOT_KEY_STORAGE } from './storage';
+import { REMNOTE_PAIR_KEY_STORAGE } from './storage';
 
-export async function getOrCreateTwitterBotKey(plugin: RNPlugin) {
-  const key = await plugin.storage.getSynced(TWITTER_BOT_KEY_STORAGE);
+export async function getOrCreateRemNotePairKey(plugin: RNPlugin) {
+  const key = await plugin.storage.getSynced(REMNOTE_PAIR_KEY_STORAGE);
 
   if (key) {
     return key;
   } else {
     const newKey = ('' + Math.random()).substring(2);
-    await plugin.storage.setSynced(TWITTER_BOT_KEY_STORAGE, newKey);
+    await plugin.storage.setSynced(REMNOTE_PAIR_KEY_STORAGE, newKey);
     return newKey;
   }
 }
