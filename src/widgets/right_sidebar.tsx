@@ -67,7 +67,7 @@ export const RightSidebarWidget = () => {
   return (
     <div className="m-4">
       <h1>Save to RemNote</h1>
-      <h2>Twitter</h2>
+      <h2>🐦 Twitter</h2>
       {twitterConnected ? (
         <div>
           Reply to any tweet with "@{REMNOTE_BOT_NAME} learn" to save tweets to RemNote.{' '}
@@ -102,7 +102,7 @@ export const RightSidebarWidget = () => {
         </>
       )}
       <br />
-      <h2>Email</h2>
+      <h2>📧 Email</h2>
       {emailConnected ? (
         <div>
           Email save@remnote.com to save emails to RemNote.{' '}

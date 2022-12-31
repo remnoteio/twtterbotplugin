@@ -1,4 +1,4 @@
-import { BuiltInPowerupCodes, RichTextInterface, RNPlugin } from '@remnote/plugin-sdk';
+import { BuiltInPowerupCodes, Rem, RichTextInterface, RNPlugin } from '@remnote/plugin-sdk';
 import { getOrCreateByName } from './api_helpers';
 import { getOrCreateRemNotePairKey } from './auth';
 import {
@@ -16,11 +16,13 @@ type TweetJSON =
         question: string;
         answer: string;
       };
+      childrenTweets?: TweetResponse[];
     }
   | {
       type: SaveTweetCommand.Save;
       saveLocation?: string;
       note?: string;
+      childrenTweets?: TweetResponse[];
     };
 
 enum SaveTweetCommand {
@@ -55,50 +57,15 @@ export async function fetchTweets(plugin: RNPlugin) {
       await plugin.storage.setSynced(CONNECTED_TO_TWITTER_STORAGE, false);
       await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, err);
     } else if (tweets) {
-      const savedTweetsRem = await getOrCreateByName(plugin, TWEETS_FOLDER);
-      await savedTweetsRem?.setIsDocument(true);
-
-      const tweetTagRem = await getOrCreateByName(plugin, ['Tweet']);
-
       for (const tweet of tweets) {
-        const tweetRem = await plugin.rem.createWithMarkdown(
-          `${tweet.tweetText} [Link](${tweet.tweet.url})`
-        );
-
-        await tweetRem?.addTag(tweetTagRem);
-
-        if (tweet.info.type == SaveTweetCommand.Learn && tweet.info.generatedCard) {
-          const questionRem = await plugin.rem.createWithMarkdown(
-            `${tweet.info.generatedCard.question} >> ${tweet.info.generatedCard.answer}`
-          );
-          await questionRem?.setParent(savedTweetsRem ?? null);
-          await tweetRem?.setParent(questionRem!);
-          await tweetRem?.addPowerup(BuiltInPowerupCodes.ExtraCardDetail);
-        } else {
-          // @ts-ignore
-          const saveLocation = tweet.info.saveLocation;
-          const saveLocationRem = saveLocation
-            ? await getOrCreateByName(plugin, [saveLocation])
-            : savedTweetsRem;
-
-          //   console.log('saveLocation', saveLocation, saveLocationRem);
-
-          await saveLocationRem?.setIsDocument(true);
-
-          await tweetRem?.setParent(saveLocationRem ?? null);
-
-          if ('note' in tweet.info && tweet.info.note?.trim()) {
-            // @ts-ignore
-            const noteRem = await plugin.rem.createWithMarkdown(tweet.info.note);
-            await noteRem?.setParent(tweetRem ?? null);
-          }
-        }
+        await createTweet(plugin, tweet);
       }
 
       await plugin.storage.setSynced(LAST_TWEET_FETCH_TIME_STORAGE, new Date().getTime());
       await plugin.storage.setSynced(CONNECTED_TO_TWITTER_STORAGE, true);
 
-      savedTweetsRem?.openRemAsPage();
+      const savedTweetsRem = await getOrCreateByName(plugin, TWEETS_FOLDER);
+      await savedTweetsRem?.setIsDocument(true);
     } else {
       await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, 'Tweets not in response');
     }
@@ -106,5 +73,50 @@ export async function fetchTweets(plugin: RNPlugin) {
     if (e?.message) {
       await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, e?.message);
     }
+  }
+}
+
+async function createTweet(plugin: RNPlugin, tweet: TweetResponse, parent?: Rem) {
+  const savedTweetsRem = await getOrCreateByName(plugin, TWEETS_FOLDER);
+
+  const tweetTagRem = await getOrCreateByName(plugin, ['Tweet']);
+
+  const tweetRem = (await plugin.rem.createWithMarkdown(
+    `${tweet.tweetText} [Link](${tweet.tweet.url})`
+  ))!;
+
+  await tweetRem?.addTag(tweetTagRem);
+
+  if (tweet.info.type == SaveTweetCommand.Learn && tweet.info.generatedCard) {
+    const questionRem = await plugin.rem.createWithMarkdown(
+      `${tweet.info.generatedCard.question} >> ${tweet.info.generatedCard.answer}`
+    );
+    await questionRem?.setParent(savedTweetsRem ?? null);
+
+    await tweetRem?.setParent(parent ?? questionRem!);
+
+    await tweetRem?.addPowerup(BuiltInPowerupCodes.ExtraCardDetail);
+  } else {
+    // @ts-ignore
+    const saveLocation = tweet.info.saveLocation;
+    const saveLocationRem = saveLocation
+      ? await getOrCreateByName(plugin, [saveLocation?.trim()])
+      : savedTweetsRem;
+
+    //   console.log('saveLocation', saveLocation, saveLocationRem);
+
+    await saveLocationRem?.setIsDocument(true);
+
+    await tweetRem?.setParent(parent ?? saveLocationRem ?? null);
+
+    if ('note' in tweet.info && tweet.info.note?.trim()) {
+      // @ts-ignore
+      const noteRem = await plugin.rem.createWithMarkdown(tweet.info.note);
+      await noteRem?.setParent(tweetRem ?? null);
+    }
+  }
+
+  for (const children of tweet.childrenTweets || []) {
+    await createTweet(plugin, children, tweetRem);
   }
 }

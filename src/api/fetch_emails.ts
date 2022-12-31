@@ -8,8 +8,7 @@ import {
   LAST_TWEET_FETCH_TIME_STORAGE,
 } from './storage';
 
-const EMAIL_FETCH_URL = 'https://b794-173-75-243-94.ngrok.io/emails/fetch';
-// const EMAIL_FETCH_URL = 'https://remnoteemailbot2.herokuapp.com/emails/fetch';
+const EMAIL_FETCH_URL = 'https://remnoteemailbot2.herokuapp.com/emails/fetch';
 
 interface EmailResponse {
   time: number;
@@ -49,14 +48,14 @@ export async function fetchEmails(plugin: RNPlugin) {
         await tweetRem?.setParent(savedEmailsRem);
         await tweetRem?.addTag(emailTagRem);
 
-        const bodyRem = await plugin.rem.createWithMarkdown(email.text);
-        await bodyRem?.setParent(tweetRem);
+        for (const line of email.text.split('\n')) {
+          const bodyRem = await plugin.rem.createWithMarkdown(line);
+          await bodyRem?.setParent(tweetRem, 9999999999);
+        }
       }
 
       await plugin.storage.setSynced(LAST_EMAIL_FETCH_ERROR, new Date().getTime());
       await plugin.storage.setSynced(CONNECTED_TO_EMAIL_STORAGE, true);
-
-      savedEmailsRem?.openRemAsPage();
     } else {
       await plugin.storage.setSynced(LAST_EMAIL_FETCH_ERROR, 'Tweets not in response');
     }
