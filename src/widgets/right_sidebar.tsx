@@ -87,7 +87,7 @@ export const RightSidebarWidget = () => {
       {twitterConnected ? (
         <div>
           Reply to any tweet with <b>@{REMNOTE_BOT_NAME} save</b> or{' '}
-          <b>@{REMNOTE_BOT_NAME} learn"</b>.
+          <b>@{REMNOTE_BOT_NAME} learn</b>.
           <br />
           <br />
           <div onClick={openTweets}>
