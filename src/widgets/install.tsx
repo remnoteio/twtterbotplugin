@@ -16,17 +16,20 @@ export const InstallWidget = () => {
   const [twitterConnected] = useSyncedStorageState<boolean>(CONNECTED_TO_TWITTER_STORAGE, false);
 
   const plugin = usePlugin();
-  useIntervalWhen(
-    () => fetchTweets(plugin),
-    5000, // run callback every 1 second
-    true
-  );
+  useIntervalWhen(() => fetchTweets(plugin), 5000, true);
 
   return (
     <div className="m-4">
       <h1>Twitter Bot</h1>
       {twitterConnected ? (
-        <div> Connected!</div>
+        <div>
+          {' '}
+          Connected!
+          <br />
+          <br />
+          <br />
+          <br />
+        </div>
       ) : (
         <>
           Hey! We need to do a 1-time connection to your Twitter account to get your tweets.

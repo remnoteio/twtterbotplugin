@@ -1,11 +1,11 @@
-import {
-  usePlugin,
-  renderWidget,
-  useTracker,
-  useSessionStorageState,
-  useSyncedStorageState,
-} from '@remnote/plugin-sdk';
-import React, { useEffect } from 'react';
+import { renderWidget, usePlugin, useSyncedStorageState, useTracker } from '@remnote/plugin-sdk';
+import moment from 'moment';
+import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { useIntervalWhen } from 'rooks';
+import { getOrCreateByName } from '../api/api_helpers';
+import { REMNOTE_BOT_NAME } from '../api/consts';
+import { EMAILS_FOLDER, fetchEmails } from '../api/fetch_emails';
+import { fetchTweets, TWEETS_FOLDER } from '../api/fetch_tweets';
 import {
   CONNECTED_TO_EMAIL_STORAGE,
   CONNECTED_TO_TWITTER_STORAGE,
@@ -13,15 +13,8 @@ import {
   LAST_EMAIL_FETCH_TIME_STORAGE,
   LAST_TWEET_FETCH_TIME_STORAGE,
   LAST_TWITTER_FETCH_ERROR,
-  REMNOTE_PAIR_KEY_STORAGE,
 } from '../api/storage';
-import moment from 'moment';
 import { BlueButton } from '../ui/BlueButton';
-import { fetchTweets, TWEETS_FOLDER } from '../api/fetch_tweets';
-import { REMNOTE_BOT_NAME } from '../api/consts';
-import { getOrCreateByName } from '../api/api_helpers';
-import { EMAILS_FOLDER, fetchEmails } from '../api/fetch_emails';
-import { connect } from 'http2';
 
 export const RightSidebarWidget = () => {
   const [twitterConnected] = useSyncedStorageState<boolean>(CONNECTED_TO_TWITTER_STORAGE, false);
@@ -59,15 +52,28 @@ export const RightSidebarWidget = () => {
     savedEmailsRem?.openRemAsPage();
   };
 
-  useEffect(() => {
-    fetchTweets(plugin);
-    fetchEmails(plugin);
+  useIntervalWhen(
+    () => {
+      fetchTweets(plugin);
+      fetchEmails(plugin);
+    },
+    5000,
+    true
+  );
+
+  const focusedRemTwitterId = useTracker(async (plugin) => {
+    const rem = await plugin.focus.getFocusedRem();
+    const link = await rem?.getPowerupProperty('tweet', 'link');
+    if (link) {
+      return last(link.split('/'));
+    }
   }, []);
 
   return (
     <div className="m-4">
       <h1>Save to RemNote</h1>
       <h2>🐦 Twitter</h2>
+
       {twitterConnected ? (
         <div>
           Reply to any tweet with "@{REMNOTE_BOT_NAME} learn" to save tweets to RemNote.{' '}
@@ -80,6 +86,14 @@ export const RightSidebarWidget = () => {
           <div onClick={openTweets}>
             <BlueButton>Open Tweets</BlueButton>
           </div>
+          <br />
+          <br />
+          Tweet Preview:
+          {focusedRemTwitterId ? (
+            <TwitterTweetEmbed onLoad={function noRefCheck() {}} tweetId={focusedRemTwitterId} />
+          ) : (
+            <div>Focus on a tweet to preview</div>
+          )}
           <br />
           <br />
           Last fetched: {twitterLastFetchedHuman}
@@ -141,3 +155,7 @@ export const RightSidebarWidget = () => {
 };
 
 renderWidget(RightSidebarWidget);
+
+function last(t: string[]) {
+  return t[t.length - 1];
+}

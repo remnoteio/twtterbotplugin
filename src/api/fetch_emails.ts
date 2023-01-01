@@ -8,7 +8,7 @@ import {
   LAST_TWEET_FETCH_TIME_STORAGE,
 } from './storage';
 
-const EMAIL_FETCH_URL = 'https://remnoteemailbot2.herokuapp.com/emails/fetch';
+const EMAIL_FETCH_URL = 'https://remnotetwitterbot2.herokuapp.com/emails/fetch';
 
 interface EmailResponse {
   time: number;
@@ -23,7 +23,11 @@ interface EmailResponse {
 
 export const EMAILS_FOLDER = ['Saved Emails'];
 
+let fetching = false;
 export async function fetchEmails(plugin: RNPlugin) {
+  if (fetching) return;
+  fetching = true;
+
   const key = await getOrCreateRemNotePairKey(plugin);
 
   //   await plugin.transaction(async () => {
@@ -54,7 +58,7 @@ export async function fetchEmails(plugin: RNPlugin) {
         }
       }
 
-      await plugin.storage.setSynced(LAST_EMAIL_FETCH_ERROR, new Date().getTime());
+      await plugin.storage.setSynced(LAST_EMAIL_FETCH_TIME_STORAGE, new Date().getTime());
       await plugin.storage.setSynced(CONNECTED_TO_EMAIL_STORAGE, true);
     } else {
       await plugin.storage.setSynced(LAST_EMAIL_FETCH_ERROR, 'Tweets not in response');
@@ -64,4 +68,6 @@ export async function fetchEmails(plugin: RNPlugin) {
       await plugin.storage.setSynced(LAST_EMAIL_FETCH_ERROR, e?.message);
     }
   }
+
+  fetching = false;
 }

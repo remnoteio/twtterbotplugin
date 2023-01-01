@@ -41,7 +41,11 @@ interface TweetResponse {
 
 export const TWEETS_FOLDER = ['Saved Tweets'];
 
+let fetching = false;
 export async function fetchTweets(plugin: RNPlugin) {
+  if (fetching) return;
+  fetching = true;
+
   const key = await getOrCreateRemNotePairKey(plugin);
 
   //   await plugin.transaction(async () => {
@@ -74,21 +78,37 @@ export async function fetchTweets(plugin: RNPlugin) {
       await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, e?.message);
     }
   }
+
+  fetching = false;
+}
+
+async function createWithMarkdown(plugin: RNPlugin, text: string) {
+  const [first, ...rest] = text.split('\n');
+  const rem = await plugin.rem.createWithMarkdown(first);
+
+  for (const r of rest) {
+    if (r.trim() != '') {
+      const child = await plugin.rem.createWithMarkdown(r);
+      await child?.setParent(rem!);
+    }
+  }
+
+  return rem;
 }
 
 async function createTweet(plugin: RNPlugin, tweet: TweetResponse, parent?: Rem) {
   const savedTweetsRem = await getOrCreateByName(plugin, TWEETS_FOLDER);
 
-  const tweetTagRem = await getOrCreateByName(plugin, ['Tweet']);
-
-  const tweetRem = (await plugin.rem.createWithMarkdown(
+  const tweetRem = (await createWithMarkdown(
+    plugin,
     `${tweet.tweetText} [Link](${tweet.tweet.url})`
   ))!;
 
-  await tweetRem?.addTag(tweetTagRem);
+  await tweetRem.setPowerupProperty('tweet', 'link', [tweet.tweet.url]);
 
   if (tweet.info.type == SaveTweetCommand.Learn && tweet.info.generatedCard) {
-    const questionRem = await plugin.rem.createWithMarkdown(
+    const questionRem = await createWithMarkdown(
+      plugin,
       `${tweet.info.generatedCard.question} >> ${tweet.info.generatedCard.answer}`
     );
     await questionRem?.setParent(savedTweetsRem ?? null);
@@ -111,7 +131,7 @@ async function createTweet(plugin: RNPlugin, tweet: TweetResponse, parent?: Rem)
 
     if ('note' in tweet.info && tweet.info.note?.trim()) {
       // @ts-ignore
-      const noteRem = await plugin.rem.createWithMarkdown(tweet.info.note);
+      const noteRem = await createWithMarkdown(plugin, tweet.info.note);
       await noteRem?.setParent(tweetRem ?? null);
     }
   }

@@ -17,6 +17,21 @@ async function onActivate(plugin: ReactRNPlugin) {
     widgetTabIcon: 'https://i.imgur.com/hY8ss08.png',
   });
 
+  await plugin.app.registerPowerup('Tweet', 'tweet', 'Tweet', {
+    slots: [{ code: 'link', hidden: true, name: 'Link', onlyProgrammaticModifying: true }],
+  });
+
+  await plugin.app.registerWidget('tweet_preview', WidgetLocation.UnderRemEditor, {
+    dimensions: { height: 'auto', width: '100%' },
+    powerupFilter: 'tweet',
+  });
+
+  await plugin.settings.registerBooleanSetting({
+    id: 'previewTweets',
+    title: 'Preview tweets under their Rem',
+    defaultValue: true,
+  });
+
   void loadTwitter(plugin);
   void fetchEmails(plugin);
 
