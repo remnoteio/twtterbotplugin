@@ -27,14 +27,12 @@ Message the Twitter bot with either the "save" or "learn" command.
 
 #### Twitter "Save" Commands:
 
-Message @rem_note "save" or "save to" to save to your knowledge base. Optionally specify the save location in RemNote
-
-Example:
+Message @rem_note "save" or "save to" to save to your knowledge base. Optionally specify the save location in RemNote:
 
 - @rem_note save
 - @rem_note save to "Reading List"
 
-### Twitter "Learn" Commands:
+#### Twitter "Learn" Commands:
 
 Message @rem_note "learn" to auto-generate flashcards. Optionally specify a question that you want to learn.
 
@@ -47,3 +45,10 @@ This is auto generated in RemNote:
 
 - What is the mitochondria?? >> The powerhouse of the cell
   - "A mitochondrion is an organelle found in the cells of most Eukaryotes, such as animals, plants and fungi."
+
+#### Twitter "Save Thread" Commands:
+
+Message @rem_note "save thread" to save an entire thread. Optionally specify a save location with "save thread to".
+
+- @rem_note save thread
+- @rem_note save thread to "Reading List"
