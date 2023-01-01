@@ -71,32 +71,42 @@ export const RightSidebarWidget = () => {
 
   return (
     <div className="m-4">
+      <div className="float-right">
+        <a
+          href="https://remnote.com/plugins/save_to_remnote"
+          target="_blank"
+          className="!no-underline"
+        >
+          ?
+        </a>
+      </div>
       <h1>Save to RemNote</h1>
-      <h2>🐦 Twitter</h2>
-
+      <h2>
+        <img src="https://i.imgur.com/JYdkyJv.png" height="16" className="mr-1" /> Twitter
+      </h2>
       {twitterConnected ? (
         <div>
-          Reply to any tweet with "@{REMNOTE_BOT_NAME} learn" to save tweets to RemNote.{' '}
-          <a href="https://remnote.com/plugins/save_to_remnote" target="_blank">
-            {' '}
-            Learn more.
-          </a>
+          Reply to any tweet with <b>@{REMNOTE_BOT_NAME} save</b> or{' '}
+          <b>@{REMNOTE_BOT_NAME} learn"</b>.
           <br />
           <br />
           <div onClick={openTweets}>
             <BlueButton>Open Tweets</BlueButton>
           </div>
-          <br />
-          <br />
-          Tweet Preview:
           {focusedRemTwitterId ? (
-            <TwitterTweetEmbed onLoad={function noRefCheck() {}} tweetId={focusedRemTwitterId} />
+            <>
+              <br />
+              <TwitterTweetEmbed onLoad={function noRefCheck() {}} tweetId={focusedRemTwitterId} />
+            </>
           ) : (
-            <div>Focus on a tweet to preview</div>
+            <></>
           )}
-          <br />
-          <br />
-          Last fetched: {twitterLastFetchedHuman}
+          {twitterLastFetchedHuman != 'a few seconds ago' && (
+            <>
+              <br />
+              <div className="rn-clr-content-tertiary">Last fetched: {twitterLastFetchedHuman}</div>
+            </>
+          )}
         </div>
       ) : (
         <>
@@ -116,22 +126,22 @@ export const RightSidebarWidget = () => {
         </>
       )}
       <br />
-      <h2>📧 Email</h2>
+      <h2>
+        <span className="mr-1">📧</span> Email
+      </h2>
       {emailConnected ? (
         <div>
-          Email save@remnote.com to save emails to RemNote.{' '}
-          <a href="https://remnote.com/plugins/save_to_remnote" target="_blank">
-            {' '}
-            Learn more.
-          </a>
-          <br />
+          Email <b>save@remnote.com</b> to save emails to RemNote. <br />
           <br />
           <div onClick={openEmails}>
             <BlueButton>Open Emails</BlueButton>
           </div>
-          <br />
-          <br />
-          Last fetched: {emailLastFetchedHuman}
+          {emailLastFetchedHuman != 'a few seconds ago' && (
+            <>
+              <br />
+              <div className="rn-clr-content-tertiary">Last fetched: {emailLastFetchedHuman}</div>
+            </>
+          )}
         </div>
       ) : (
         <>

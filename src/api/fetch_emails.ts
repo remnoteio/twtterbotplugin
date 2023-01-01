@@ -52,9 +52,11 @@ export async function fetchEmails(plugin: RNPlugin) {
         await tweetRem?.setParent(savedEmailsRem);
         await tweetRem?.addTag(emailTagRem);
 
-        for (const line of email.text.split('\n')) {
-          const bodyRem = await plugin.rem.createWithMarkdown(line);
-          await bodyRem?.setParent(tweetRem, 9999999999);
+        if (email.text.trim().length > 0) {
+          for (const line of email.text.trim().split('\n')) {
+            const bodyRem = await plugin.rem.createWithMarkdown(line);
+            await bodyRem?.setParent(tweetRem, 9999999999);
+          }
         }
       }
 

@@ -34,7 +34,7 @@ interface TweetResponse {
   time: number;
 
   twitterUserId: string;
-  tweet: { tweetText: string; url: string };
+  tweet: { tweetText: string; url: string; author: string };
   tweetText: string;
   info: TweetJSON;
 }
@@ -101,7 +101,7 @@ async function createTweet(plugin: RNPlugin, tweet: TweetResponse, parent?: Rem)
 
   const tweetRem = (await createWithMarkdown(
     plugin,
-    `${tweet.tweetText} [Link](${tweet.tweet.url})`
+    `${tweet.tweetText} [↪](${tweet.tweet.url}) - [[@${tweet.tweet.author}]]`
   ))!;
 
   await tweetRem.setPowerupProperty('tweet', 'link', [tweet.tweet.url]);
