@@ -31,6 +31,9 @@ export const InstallEmailWidget = () => {
           Hey! We need to do a 1-time connection to confirm your email address.
           <br />
           <br />
+          Please wait a minute after sending the connection email.
+          <br />
+          <br />
           {twitterBotKey ? (
             <a href={link} target="_blank" className="!no-underline">
               <BlueButton>Click here, then press "Send"</BlueButton>
