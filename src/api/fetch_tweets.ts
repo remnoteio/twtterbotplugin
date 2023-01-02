@@ -56,7 +56,6 @@ export async function fetchTweets(plugin: RNPlugin) {
       await fetch(`${TWEET_FETCH_URL}?remnotePairKey=${key}&time=${time}`)
     ).json();
 
-    //   console.log('tweets', tweets);
     if (err) {
       await plugin.storage.setSynced(CONNECTED_TO_TWITTER_STORAGE, false);
       await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, err);
@@ -67,6 +66,7 @@ export async function fetchTweets(plugin: RNPlugin) {
 
       await plugin.storage.setSynced(LAST_TWEET_FETCH_TIME_STORAGE, new Date().getTime());
       await plugin.storage.setSynced(CONNECTED_TO_TWITTER_STORAGE, true);
+      await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, undefined);
 
       const savedTweetsRem = await getOrCreateByName(plugin, TWEETS_FOLDER);
       await savedTweetsRem?.setIsDocument(true);
@@ -76,6 +76,8 @@ export async function fetchTweets(plugin: RNPlugin) {
   } catch (e: any) {
     if (e?.message) {
       await plugin.storage.setSynced(LAST_TWITTER_FETCH_ERROR, e?.message);
+    } else {
+      console.error(e);
     }
   }
 
@@ -104,7 +106,7 @@ async function createTweet(plugin: RNPlugin, tweet: TweetResponse, parent?: Rem)
     `${tweet.tweetText} [↪](${tweet.tweet.url}) - [[@${tweet.tweet.author}]]`
   ))!;
 
-  await tweetRem.setPowerupProperty('tweet', 'link', [tweet.tweet.url]);
+  await tweetRem.setPowerupProperty('tweet', 'link', [tweet.tweet.url ?? '']);
 
   if (tweet.info.type == SaveTweetCommand.Learn && tweet.info.generatedCard) {
     const questionRem = await createWithMarkdown(

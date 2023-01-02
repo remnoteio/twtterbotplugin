@@ -35,6 +35,11 @@ async function onActivate(plugin: ReactRNPlugin) {
   void loadTwitter(plugin);
   void fetchEmails(plugin);
 
+  setInterval(() => {
+    void loadTwitter(plugin);
+    void fetchEmails(plugin);
+  }, 60 * 1000);
+
   // // Show a toast notification to the user.
   // await plugin.app.toast("I'm a toast!");
 }
