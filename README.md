@@ -19,7 +19,7 @@ Save Tweets directly to RemNote, and use AI to auto-generate flashcards from twe
 ### Connecting Your Twitter
 
 1. Install the plugin and press the "CONNECT" button in the popup
-2. Reply to any tweet with @rem_note, or share the tweet in a Twitter DM to @rem_note
+2. Reply to any tweet with @RemNoteBot, or share the tweet in a Twitter DM to @RemNoteBot
 
 ### Twitter Commands
 
@@ -27,19 +27,19 @@ Message the Twitter bot with either the "save" or "learn" command.
 
 #### Twitter "Save" Commands:
 
-Message @rem_note "save" or "save to" to save to your knowledge base. Optionally specify the save location in RemNote:
+Message @RemNoteBot "save" or "save to" to save to your knowledge base. Optionally specify the save location in RemNote:
 
-- @rem_note save
-- @rem_note save to "Reading List"
+- @RemNoteBot save
+- @RemNoteBot save to "Reading List"
 
 #### Twitter "Learn" Commands:
 
-Message @rem_note "learn" to auto-generate flashcards. Optionally specify a question that you want to learn.
+Message @RemNoteBot "learn" to auto-generate flashcards. Optionally specify a question that you want to learn.
 
 Example:
 On Twitter, as a reply to a tweet:
 
-> @rem_note learn "What is the mitochondria?"
+> @RemNoteBot learn "What is the mitochondria?"
 
 This is auto generated in RemNote:
 
@@ -48,7 +48,7 @@ This is auto generated in RemNote:
 
 #### Twitter "Save Thread" Commands:
 
-Message @rem_note "save thread" to save an entire thread. Optionally specify a save location with "save thread to".
+Message @RemNoteBot "save thread" to save an entire thread. Optionally specify a save location with "save thread to".
 
-- @rem_note save thread
-- @rem_note save thread to "Reading List"
+- @RemNoteBot save thread
+- @RemNoteBot save thread to "Reading List"
