@@ -1,7 +1,7 @@
 {
   "author": "RemNote",
   "name": "Save to RemNote (Twitter and Email)",
-  "description": "",
+  "description": "Save tweets and emails directly to RemNote!",
   "enableOnMobile": false,
   "id": "save_to_remnote",
   "manifestVersion": 1,
