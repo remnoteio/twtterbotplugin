@@ -86,11 +86,11 @@ export async function fetchTweets(plugin: RNPlugin) {
 
 async function createWithMarkdown(plugin: RNPlugin, text: string) {
   const [first, ...rest] = text.split('\n');
-  const rem = await plugin.rem.createWithMarkdown(first);
+  const rem = await plugin.rem.createSingleRemWithMarkdown(first);
 
   for (const r of rest) {
     if (r.trim() != '') {
-      const child = await plugin.rem.createWithMarkdown(r);
+      const child = await plugin.rem.createSingleRemWithMarkdown(r);
       await child?.setParent(rem!);
     }
   }

@@ -7,6 +7,8 @@ import {
   LAST_EMAIL_FETCH_TIME_STORAGE,
   LAST_TWEET_FETCH_TIME_STORAGE,
 } from './storage';
+import TurndownService from 'turndown';
+var turndownService = new TurndownService();
 
 const EMAIL_FETCH_URL = 'https://remnotetwitterbot2.herokuapp.com/emails/fetch';
 
@@ -48,13 +50,15 @@ export async function fetchEmails(plugin: RNPlugin) {
       const emailTagRem = await getOrCreateByName(plugin, ['Email']);
 
       for (const email of emails) {
-        const tweetRem = (await plugin.rem.createWithMarkdown(email.subject))!;
+        const tweetRem = (await plugin.rem.createSingleRemWithMarkdown(email.subject))!;
         await tweetRem?.setParent(savedEmailsRem);
         await tweetRem?.addTag(emailTagRem);
+        // convert html to markdown
+        const md = turndownService.turndown(email.html).trim();
 
-        if (email.text.trim().length > 0) {
-          for (const line of email.text.trim().split('\n')) {
-            const bodyRem = await plugin.rem.createWithMarkdown(line);
+        if (md.length > 0) {
+          for (const line of md.split('\n')) {
+            const bodyRem = await plugin.rem.createSingleRemWithMarkdown(line);
             await bodyRem?.setParent(tweetRem, 9999999999);
           }
         }
