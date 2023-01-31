@@ -1,4 +1,4 @@
-import { declareIndexPlugin, ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
+import { declareIndexPlugin, ReactRNPlugin, RNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import { fetchEmails } from '../api/fetch_emails';
 import { fetchTweets } from '../api/fetch_tweets';
 import { PROMPTED_TO_CONNECT_TO_TWITTER } from '../api/storage';
@@ -44,7 +44,10 @@ async function onActivate(plugin: ReactRNPlugin) {
   // await plugin.app.toast("I'm a toast!");
 }
 
-async function loadTwitter(plugin: any) {
+async function loadTwitter(plugin: RNPlugin) {
+  if (!(await plugin.kb.isPrimaryKnowledgeBase())) {
+    return;
+  }
   await fetchTweets(plugin);
 
   const promptedTwitterConnected = await plugin.storage.getSynced(PROMPTED_TO_CONNECT_TO_TWITTER);

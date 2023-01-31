@@ -4,7 +4,7 @@ Save tweets and emails directly to RemNote!
 
 ## Email
 
-Send emails directly to RemNote by emailing save@remnote.com
+Send emails directly to RemNote by emailing save@remnote.com. Note that tweets will only be saved to your primary knowledgebase.
 
 ### Connecting Your Email
 
@@ -14,7 +14,7 @@ Send emails directly to RemNote by emailing save@remnote.com
 
 ## Tweets
 
-Save Tweets directly to RemNote, and use AI to auto-generate flashcards from tweets!
+Save Tweets directly to RemNote, and use AI to auto-generate flashcards from tweets! Note that tweets will only be saved to your primary knowledgebase.
 
 ### Connecting Your Twitter
 

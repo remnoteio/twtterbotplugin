@@ -27,6 +27,9 @@ export const EMAILS_FOLDER = ['Saved Emails'];
 
 let fetching = false;
 export async function fetchEmails(plugin: RNPlugin) {
+  if (!(await plugin.kb.isPrimaryKnowledgeBase())) {
+    return;
+  }
   if (fetching) return;
   fetching = true;
 
